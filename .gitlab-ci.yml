@@ -1,0 +1,206 @@
+---
+variables:
+  PRODUCT_NAME: "erprof"
+  SERVICE_NAME: "erprof"
+  ENABLE_STATIC_ANALYZE: 1
+  ENABLE_CODE_STYLE_CHECK: 1
+  ENABLE_TEST_COVERAGE_DIFF_CHECK: 1
+  WEBAPP_DEPLOY_USE_SERVICE_CHECKS_HTTP_STATUS: 'true'
+  DEPLOY_APP_TYPE: "webapp,scheduleapp"
+  SERVICE_RESOURCES_CPU: 200
+  SERVICE_RESOURCES_MEMORY: 256
+  SERVICE_RESOURCES_CONTAINER_COUNT: 1
+  DEPLOY_DB_MIGRATION_COMMAND: "php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_1glms_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_budgetnik_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_gkh_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_glavbukh_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_gzakypki_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_kdelo_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_law_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_otruda_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.erro_menobr_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.na_fd_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.sovet_gd_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_hr-director_ru &&
+  php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_1glv_ru"
+  CLEAR_CACHE_COMMAND: "php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_kdelo_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_kdelo_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_kdelo_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_1glms_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_1glms_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_1glms_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_budgetnik_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_budgetnik_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_budgetnik_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_gkh_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_gkh_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_gkh_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_glavbukh_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_glavbukh_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_glavbukh_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_gzakypki_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_gzakypki_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_gzakypki_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_law_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_law_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_law_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_otruda_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_otruda_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_otruda_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.erro_menobr_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.erro_menobr_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.erro_menobr_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.na_fd_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.na_fd_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.na_fd_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.sovet_gd_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.sovet_gd_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.sovet_gd_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_hr-director_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_hr-director_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_hr-director_ru &&
+  php /var/www/bin/console doctrine:cache:clear-result --x-host=ru-ru.er_1glv_ru &&
+  php /var/www/bin/console doctrine:cache:clear-query --x-host=ru-ru.er_1glv_ru &&
+  php /var/www/bin/console doctrine:cache:clear-metadata --x-host=ru-ru.er_1glv_ru"
+
+lint-php:
+  variables:
+    LINTER_DOCKER_IMAGE: nexus.action-media.ru/docker-action-base/base-service-php74:latest
+
+include:
+  - project: 'dev/ci-receipts'
+    file: '/gitlab/.gitlab-ci-php.yml'
+  - project: 'dev/ci-receipts'
+    file: '/gitlab/patch/.php-new-migrations.yml'
+  - local: '/gitlab-ci/.gitlab-ci-datafix.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-1glms.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-budgetnik.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-gkh.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-glavbukh.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-gzakypki.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-kdelo.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-law.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-otruda.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-sovet-gd.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-erro-menobr.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-na-fd.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-hr-director.yml'
+  - local: '/gitlab-ci/sites/.gitlab-ci-er-1glv.yml'
+
+clear-cache-dev:
+  stage: post-deploy
+  when: on_success
+  extends: .deploy-command-dev
+  except:
+    - /^release/
+    - master
+  dependencies:
+    - deploy-dev
+  needs: ["deploy-dev"]
+  variables:
+    DEPLOY_COMMAND: ${CLEAR_CACHE_COMMAND}
+    DEPLOY_ENV_NAME: dev
+
+clear-cache-dev-master:
+  stage: post-deploy
+  when: on_success
+  extends: .deploy-command-dev
+  only:
+    - master
+  dependencies:
+    - deploy-dev-master
+  needs: ["deploy-dev-master"]
+  variables:
+    DEPLOY_COMMAND: ${CLEAR_CACHE_COMMAND}
+    DEPLOY_ENV_NAME: dev
+
+deploy-rc:
+  variables:
+    WEBAPP_SERVICE_RESOURCES_CONTAINER_COUNT: 3
+    WEBAPP_SERVICE_RESOURCES_CPU: 500
+    WEBAPP_SERVICE_RESOURCES_MEMORY: 512
+    SCHEDULEAPP_SERVICE_RESOURCES_CPU: 500
+    SCHEDULEAPP_SERVICE_RESOURCES_MEMORY: 1024
+
+clear-cache-rc:
+  stage: post-deploy
+  when: on_success
+  extends: .deploy-command-dev
+  timeout: 3min
+  dependencies:
+    - deploy-rc
+  only:
+    - /^release/
+  needs: ["deploy-rc"]
+  variables:
+    DEPLOY_COMMAND: ${CLEAR_CACHE_COMMAND}
+    DEPLOY_ENV_NAME: rc
+
+clear-cache-rc-master:
+  stage: post-deploy
+  when: on_success
+  extends: .deploy-command-dev
+  timeout: 3min
+  dependencies:
+    - deploy-rc-master
+  only:
+    - master
+  needs: ["deploy-rc-master"]
+  variables:
+    DEPLOY_COMMAND: ${CLEAR_CACHE_COMMAND}
+    DEPLOY_ENV_NAME: rc
+
+deploy-prod:
+  variables:
+    WEBAPP_SERVICE_RESOURCES_CONTAINER_COUNT: 10
+    WEBAPP_SERVICE_RESOURCES_CPU: 500
+    WEBAPP_SERVICE_RESOURCES_MEMORY: 512
+    SCHEDULEAPP_SERVICE_RESOURCES_CPU: 500
+    SCHEDULEAPP_SERVICE_RESOURCES_MEMORY: 1024
+
+clear-cache-prod:
+  stage: post-deploy
+  extends: .deploy-command-prod
+  when: on_success
+  only:
+    - master
+    - /^release/
+  needs: ["deploy-prod"]
+  dependencies:
+    - deploy-prod
+  variables:
+    DEPLOY_COMMAND: ${CLEAR_CACHE_COMMAND}
+    DEPLOY_ENV_NAME: prod
+
+.db-migration:
+  script:
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_1glms_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_budgetnik_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_gkh_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_glavbukh_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_gzakypki_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_kdelo_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_law_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_otruda_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.erro_menobr_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.na_fd_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.sovet_gd_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_hr-director_ru
+    - php /var/www/bin/console doctrine:migrations:migrate -n --x-host=ru-ru.er_1glv_ru
+
+test:
+  variables:
+    SLEEP_TIME_BEFORE_MIGRATIONS: 30
+    COMMAND_INDEX_SPHINX: indexer --all
+    COMMAND_RUN_SPHINX: searchd
+  script:
+    - docker-compose exec -T test ${COMMAND_APPLY_MIGRATIONS}
+    - docker-compose exec -T test ${COMMAND_APPLY_FIXTURES}
+    - docker-compose exec -T sphinx ${COMMAND_INDEX_SPHINX}
+    - docker-compose exec -T sphinx ${COMMAND_RUN_SPHINX}
+    - docker-compose exec -T test ${COMMAND_CODECEPTION_RUN_TESTS}
+
+db-migration-rc:
+  variables:
+    DEPLOY_ENV_NAME: rc
+  timeout: 3min

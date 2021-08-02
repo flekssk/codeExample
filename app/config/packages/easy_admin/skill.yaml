@@ -1,0 +1,46 @@
+---
+easy_admin:
+  entities:
+    Skill:
+      class: App\Domain\Entity\Skill\Skill
+      controller: App\UI\Controller\EasyAdmin\SkillController
+      label: 'Навыки специалистов'
+      list:
+        actions:
+          - show
+          - {name: 'edit', template: 'easy_admin_role_marketer.twig'}
+        fields:
+          - {property: 'id'}
+          - {property: 'name', label: 'Название'}
+          - {property: 'skillImproveLinks', label: 'Ссылки на обучение', template: 'skill_improve_links.html.twig'}
+          - {property: 'updatedAt', label: 'Дата последнего обновления'}
+          - {property: 'active', label: 'Активность'}
+      show:
+        actions:
+          - {name: 'edit', template: 'easy_admin_role_marketer.twig'}
+        fields:
+          - {property: 'id'}
+          - {property: 'name', label: 'Название'}
+          - {property: 'macroSkillId', label: 'ID макронавыка'}
+          - {property: 'macroSkillName', label: 'Название макронавыка'}
+          - {property: 'macroTypeId', label: 'ID макротипа'}
+          - {property: 'macroTypeName', label: 'Название макротипа'}
+          - {property: 'reestrId', label: 'ID реестра'}
+          - {property: 'reestrName', label: 'Название реестра'}
+          - {property: 'updatedAt', label: 'Дата последнего обновления'}
+          - {property: 'skillImproveLinks', label: 'Ссылки на обучение', template: 'skill_improve_links.html.twig'}
+          - {property: 'active', label: 'Активность'}
+      edit:
+        item_permission: 'ROLE_MARKETER'
+        fields:
+          - {property: 'id', type_options: {disabled: true}}
+          - {property: 'name', label: 'Название', type_options: {disabled: true}}
+          - {property: 'macroSkillId', label: 'ID макронавыка', type_options: {disabled: true}}
+          - {property: 'macroSkillName', label: 'Название макронавыка', type_options: {disabled: true}}
+          - {property: 'macroTypeId', label: 'ID макротипа', type_options: {disabled: true}}
+          - {property: 'macroTypeName', label: 'Название макротипа', type_options: {disabled: true}}
+          - {property: 'reestrId', label: 'ID реестра', type_options: {disabled: true}}
+          - {property: 'reestrName', label: 'Название реестра', type_options: {disabled: true}}
+          - {property: 'skillImproveLinks', label: 'Ссылки на обучение', type: 'App\UI\Form\SkillImproveLinkCollectionForm', type_options: {entry_type: 'App\UI\Form\SkillImproveLinkForm', empty_data: 'empty', mapped: false, allow_add: true, allow_delete: true, delete_empty: true, attr: {class: 'skill-improve-link-form'}}}
+          - {property: 'active', label: 'Активность'}
+      disabled_actions: ['new', 'delete']

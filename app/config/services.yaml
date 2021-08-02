@@ -1,0 +1,228 @@
+---
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+  env: '%env(APP_ENV)%'
+  revisions.entity_types:
+    - 'App\Domain\Entity\SiteOption'
+    - 'App\Domain\Entity\Id2\Id2Event'
+    - 'App\Domain\Entity\Event\CustomValue'
+    - 'App\Domain\Entity\RegulatoryDocuments\RegulatoryDocuments'
+    - 'App\Domain\Entity\ReferenceInformation\ReferenceInformation'
+    - 'App\Domain\Entity\AttestationCommissionMember\AttestationCommissionMember'
+    - 'App\Domain\Entity\Specialist\Specialist'
+    - 'App\Domain\Entity\DocumentType\DocumentType'
+    - 'App\Domain\Entity\User'
+  revisions.serializer.base_normalizer: App\Infrastructure\EntityRevisions\Serializer\Normalizer\BaseNormalizer
+  revisions.serializer.entity_normalizers:
+    App\Domain\Entity\Specialist\Specialist: App\Infrastructure\EntityRevisions\Serializer\Normalizer\EntityNormalizer\SpecialistNormalizer
+    App\Domain\Entity\DocumentType\DocumentType: App\Infrastructure\EntityRevisions\Serializer\Normalizer\EntityNormalizer\DocumentTypeNormalizer
+    App\Domain\Entity\AttestationCommissionMember\AttestationCommissionMember: App\Infrastructure\EntityRevisions\Serializer\Normalizer\EntityNormalizer\AttestationCommissionMemberNormalizer
+    App\Domain\Entity\RegulatoryDocuments\RegulatoryDocuments: App\Infrastructure\EntityRevisions\Serializer\Normalizer\EntityNormalizer\RegulatoryDocumentsNormalizer
+  logger.additional_fields:
+    x-host: 'x-host'
+
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    # Automatically injects dependencies in your services.
+    autowire: true
+    # Automatically registers your services as commands, event subscribers, etc.
+    autoconfigure: true
+    # Allows optimizing the container by removing unused services; this also means
+    # fetching services directly from the container via $container->get() won't work.
+    # The best practice is to be explicit about your dependencies anyway.
+    public: false
+
+  # makes classes in src/ available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+  App\:
+    resource: '../src/*'
+    exclude:
+      - '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+      - '../src/Domain/Entity/'
+      - '../src/Application/ValueObject'
+      - '../src/Application/**/Dto/'
+      - '../src/UI/**/Dto/'
+      - '../src/Infrastructure/AuthToken/UserMapper/Adapters'
+      - '../src/Infrastructure/TemplateRenderer/AssetsProcessor/'
+      - '../src/Command/DataTransfer/CsvReader.php'
+
+  Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+    arguments:
+      - 'pgsql:dbname=%env(DATABASE_NAME)%; host=%env(DATABASE_HOST)%; port=%env(DATABASE_PORT)%'
+      - {db_table: 'user_sessions', db_username: '%env(DATABASE_USER)%', db_password: '%env(DATABASE_PASSWORD)%'}
+
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
+  App\UI\Controller\:
+    resource: '../src/UI/Controller'
+    tags: ['controller.service_arguments']
+
+  App\UI\Service\Response\HttpApiExceptionListener:
+    tags:
+      - {name: kernel.event_listener, event: kernel.exception}
+
+  kernel.event_listener.json_request_transformer:
+    class: Qandidate\Common\Symfony\HttpKernel\EventListener\JsonRequestTransformerListener
+    tags:
+      - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 100}
+
+  Action\Id2User\Id2ClientInterface:
+    class: Action\Id2User\Id2Client
+    arguments:
+      - '%env(ID2_LK_URL)%'
+      - '%env(APP_ID)%'
+      - '%env(APP_ID_SECRET_KEY)%'
+
+  App\Infrastructure\HttpClients\Id2\Assembler\Id2UserAssembler:
+    arguments:
+      - '%env(ID2_LK_URL)%'
+
+  App\Domain\EventDispatcher\ListenerProviderInterface:
+    class: App\Infrastructure\EventDispatcher\ListenerProvider
+
+  App\Domain\EventDispatcher\EventDispatcherInterface:
+    class: App\Infrastructure\EventDispatcher\EventDispatcher
+
+  App\Infrastructure\HealthCheck\DbConnectionHealthChecker: ~
+
+  App\Application\HealthCheck\CompositeHealthCheckService:
+    -
+      - '@App\Infrastructure\HealthCheck\DbConnectionHealthChecker'
+
+  App\Application\HealthCheck\HealthCheckServiceInterface: '@App\Application\HealthCheck\CompositeHealthCheckService'
+
+  App\Application\Position\PositionServiceInterface:
+    class: App\Application\Position\PositionService
+
+  App\Application\SpecialistWorkSchedule\Dto\SpecialistWorkScheduleResultDto:
+    class: App\Application\SpecialistWorkSchedule\Dto\SpecialistWorkScheduleResultDto
+
+  App\Infrastructure\HttpClients\Crm\CrmProxyClient:
+    arguments:
+      $wsdlUrl: '%env(CRM_API_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\HttpClients\CrmApi\CrmApiClient:
+    arguments:
+      $baseUrl: '%env(CRM_BASE_URL)%'
+      $appId: '%env(CRM_APP_ID)%'
+      $secretKey: '%env(CRM_SECRET_KEY)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\HttpClients\Id2\Id2ApiClientInterface:
+    class: App\Infrastructure\HttpClients\Id2\Id2Client
+    arguments:
+      $apiUrl: '%env(ID2_USERS_BACKEND_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\HttpClients\Id2\Id2ProductsClientInterface:
+    class: App\Infrastructure\HttpClients\Id2\Id2ProductsClient
+    arguments:
+      $apiUrl: '%env(ID2_USERS_BACKEND_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Application\Product\ProductService:
+    arguments:
+      $registryDomain: '%env(REGISTRY_DOMAIN)%'
+
+  Aws\S3\S3Client:
+    arguments:
+      - version: 'latest'
+        bucket_endpoint: false
+        region: '%env(AWS_S3_REGION)%'
+        credentials:
+          key: '%env(AWS_S3_KEY)%'
+          secret: '%env(AWS_S3_SECRET)%'
+        endpoint: '%env(AWS_S3_ENDPOINT)%'
+
+  App\Infrastructure\VichUploaderNamer\DocumentTypePreviewNamer:
+    public: true
+
+  App\Infrastructure\VichUploaderNamer\DocumentTypeBackgroundNamer:
+    public: true
+
+  App\Infrastructure\VichUploaderNamer\AttestationCommissionMemberAvatarNamer:
+    public: true
+
+  App\Infrastructure\VichUploaderNamer\RegulatoryDocumentsFileNamer:
+    public: true
+
+  App\Infrastructure\EventSubscriber\EntityEventSubscriber:
+    tags:
+      - {name: 'doctrine.event_subscriber', connection: 'default'}
+
+  App\Infrastructure\EntityRevisions\EventSubscriber\EntityRevisionsEventSubscriber:
+    arguments:
+      $tokenStorage: '@security.token_storage'
+      $entityTypes: '%revisions.entity_types%'
+    tags:
+      - {name: 'doctrine.event_subscriber', connection: 'default'}
+
+  App\Infrastructure\Persistence\Sphinx\Repository\Specialist\SpecialistSphinxRepository:
+    arguments:
+      $specialistIndex: '%env(SPHINX_SPECIALIST_INDEX)%'
+
+  App\Infrastructure\HttpClients\Skills\SkillsClientInterface:
+    class: App\Infrastructure\HttpClients\Skills\SkillsClient
+    arguments:
+      $apiUrl: '%env(SKILL_SERVICE_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\HttpClients\Skills\SkillsClient:
+    arguments:
+      $apiUrl: '%env(SKILL_SERVICE_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\HttpClients\School\Client\SchoolClientInterface:
+    class: App\Infrastructure\HttpClients\School\Client\SchoolClient
+    arguments:
+      $apiUrl: '%env(SKILL_SERVICE_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\HttpClients\School\Client\SchoolClient:
+    arguments:
+      $apiUrl: '%env(SKILL_SERVICE_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\HttpClients\SchoolProgram\SchoolProgramClientInterface:
+    class: App\Infrastructure\HttpClients\SchoolProgram\SchoolProgramClient
+    arguments:
+      $apiUrl: '%env(SCHOOL_DATA_PROVIDER_SERVICE_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\HttpClients\SchoolProgram\SchoolProgramClient:
+    arguments:
+      $apiUrl: '%env(SCHOOL_DATA_PROVIDER_SERVICE_URL)%'
+      $defaultRequestTimeout: '%env(DEFAULT_REQUEST_TIMEOUT)%'
+
+  App\Infrastructure\EntityRevisions\Configuration:
+    arguments:
+      $baseNormalizer: '%revisions.serializer.base_normalizer%'
+      $entityNormalizers: '%revisions.serializer.entity_normalizers%'
+
+  App\UI\Controller\Oauth\OauthController:
+    arguments:
+      $appCode: '%env(APP_CODE)%'
+      $portalHost: '%env(PORTAL_HOST)%'
+
+  App\Application\Auth\Oauth:
+    arguments:
+      $appCode: '%env(APP_CODE)%'
+      $clientCode: '%env(CLIENT_CODE)%'
+
+  App\Datafix\:
+    resource: '../src/Datafix/*'
+    public: true
+
+  Redis:
+    '@snc_redis.default'
+
+  "logger":
+    class: Action\Logger\ActionLogger
+    arguments:
+      $additionalFields: '%logger.additional_fields%'

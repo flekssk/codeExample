@@ -1,0 +1,27 @@
+---
+easy_admin:
+  entities:
+    RegulatoryDocuments:
+      class: App\Domain\Entity\RegulatoryDocuments\RegulatoryDocuments
+      label: 'Правила работы реестра'
+      list:
+        actions:
+          - show
+          - {name: 'edit', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'delete', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'new', label: 'Добавить запись', template: 'easy_admin_role_marketer.twig'}
+        fields:
+          - {property: 'id'}
+          - {property: 'title', label: 'Название'}
+          - {property: 'url', label: 'Файл', template: 'regulatory_documents_url.html.twig', base_path: ''}
+          - {property: 'active', label: 'Активность', role: 'ROLE_MARKETER'}
+      show:
+        actions:
+          - {name: 'edit', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'delete', template: 'easy_admin_role_marketer.twig'}
+      form:
+        item_permission: 'ROLE_MARKETER'
+        fields:
+          - {property: 'title', label: 'Название', type_options: {empty_data: ''}}
+          - {property: 'file', label: 'Документ', type: 'vich_file'}
+          - {property: 'active', label: 'Активность'}

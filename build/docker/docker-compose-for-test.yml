@@ -1,0 +1,38 @@
+---
+version: '3.5'
+
+services:
+  test:
+    image: ${DOCKER_IMAGE}
+    working_dir: /var/www
+    depends_on:
+      - db
+      - sphinx
+    environment:
+      - ENVIRONMENT=test
+      - DATABASE_NAME=db
+      - TESTRAIL_ENABLE=0
+  db:
+    image: postgres:10.5
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db
+  sphinx:
+    build:
+      context: .
+      dockerfile: ./build/docker/sphinx/Dockerfile
+      target: test
+    ports:
+      - 9306:9306
+      - 9312:9312
+    depends_on:
+      - db
+
+#  wiremock:
+#    context: .
+#    build: ./build/docker/wiremock/Dockerfile
+#    volumes:
+#      - ./app/tests/wiremock/:/home/wiremock

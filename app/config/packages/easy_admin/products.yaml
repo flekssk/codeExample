@@ -1,0 +1,13 @@
+---
+easy_admin:
+  entities:
+    Product:
+      class: App\Domain\Entity\Product\Product
+      label: 'Продукты Реестра'
+      list:
+        item_permission: 'ROLE_MARKETER'
+        actions: ['show', 'edit']
+        fields:
+          - {property: 'id'}
+          - {property: 'name', label: 'Название'}
+      disabled_actions: ['new', 'delete', 'edit']

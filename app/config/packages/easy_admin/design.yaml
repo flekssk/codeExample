@@ -1,0 +1,42 @@
+---
+easy_admin:
+  design:
+    assets:
+      css:
+        - 'easyadmin/css/styles.css'
+    menu:
+      - label: 'Специалисты'
+        children:
+          - {entity: 'Specialist', default: true}
+          - 'DocumentType'
+          - 'SpecialistDocument'
+      - label: 'Справочники'
+        children: ['DocumentTemplate', 'Position']
+      - label: 'Навыки'
+        children:
+          - 'Skill'
+          - {route: 'macro_skill_sort', label: 'Сортировка макронавыков'}
+          - {route: 'skill_sort', label: 'Сортировка навыков'}
+      - label: 'Информация'
+        children:
+          - {entity: 'RegulatoryDocuments'}
+          - {entity: 'ReferenceInformation'}
+          - {entity: 'AttestationCommissionMember'}
+          - {entity: 'EntityRevision', permission: ['ROLE_SUPERVISOR', 'ROLE_ADMIN']}
+          - {entity: 'School'}
+      - label: 'События'
+        permission: 'ROLE_MARKETER'
+        children:
+          - {entity: 'Id2Event', permission: 'ROLE_MARKETER'}
+          - {entity: 'CustomValue', permission: 'ROLE_MARKETER'}
+      - label: 'Управление доступами'
+        permission: 'ROLE_MARKETER'
+        children:
+          - {entity: 'User', permission: 'ROLE_MARKETER'}
+      - label: 'Настройки'
+        permission: 'ROLE_MARKETER'
+        children:
+          - {entity: 'SiteOption', permission: 'ROLE_MARKETER'}
+          - {entity: 'Product', permission: 'ROLE_MARKETER'}
+          - {route: 'file-manager', permission: 'ROLE_MARKETER', label: 'Файловый менеджер', role: 'ROLE_MARKETER'}
+          - {route: 'cache', label: 'Кэш', role: 'ROLE_ADMIN'}

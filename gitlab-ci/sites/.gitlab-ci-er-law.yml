@@ -1,0 +1,20 @@
+---
+
+.law-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.er_law_ru"
+
+datafix-law-dev:
+  extends:
+    - .datafix-dev
+    - .law-variables
+
+datafix-law-rc:
+  extends:
+    - .datafix-rc
+    - .law-variables
+
+datafix-law-prod:
+  extends:
+    - .datafix-prod
+    - .law-variables

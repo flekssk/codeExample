@@ -1,0 +1,20 @@
+---
+
+.hr-director-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.er_hr-director_ru"
+
+datafix-hr-director-dev:
+  extends:
+    - .datafix-dev
+    - .hr-director-variables
+
+datafix-hr-director-rc:
+  extends:
+    - .datafix-rc
+    - .hr-director-variables
+
+datafix-hr-director-prod:
+  extends:
+    - .datafix-prod
+    - .hr-director-variables

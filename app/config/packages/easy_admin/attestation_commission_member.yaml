@@ -1,0 +1,40 @@
+---
+easy_admin:
+  entities:
+    AttestationCommissionMember:
+      class: App\Domain\Entity\AttestationCommissionMember\AttestationCommissionMember
+      label: 'Аттестационная комиссия'
+      list:
+        actions:
+          - show
+          - {name: 'edit', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'delete', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'new', label: 'Добавить запись', template: 'easy_admin_role_marketer.twig'}
+        fields:
+          - {property: 'id'}
+          - {property: 'secondName', label: 'Фамилия'}
+          - {property: 'firstName', label: 'Имя'}
+          - {property: 'middleName', label: 'Отчество'}
+          - {property: 'active', label: 'Активность', role: 'ROLE_MARKETER'}
+      show:
+        actions:
+          - {name: 'edit', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'delete', template: 'easy_admin_role_marketer.twig'}
+        fields:
+          - {property: 'secondName', label: 'Фамилия'}
+          - {property: 'firstName', label: 'Имя'}
+          - {property: 'middleName', label: 'Отчество'}
+          - {property: 'description', label: 'Информация о члене комиссии'}
+          - {property: 'imageFile', label: 'Аватар', type: 'image'}
+          - {property: 'isLeader', label: 'Председатель'}
+          - {property: 'active', label: 'Активность'}
+      form:
+        item_permission: 'ROLE_MARKETER'
+        fields:
+          - {property: 'secondName', label: 'Фамилия', type_options: {empty_data: ''}}
+          - {property: 'firstName', label: 'Имя', type_options: {empty_data: ''}}
+          - {property: 'middleName', label: 'Отчество'}
+          - {property: 'description', label: 'Информация о члене комиссии'}
+          - {property: 'imageFile', label: 'Аватар', type: 'vich_image'}
+          - {property: 'isLeader', label: 'Председатель'}
+          - {property: 'active', label: 'Активность'}

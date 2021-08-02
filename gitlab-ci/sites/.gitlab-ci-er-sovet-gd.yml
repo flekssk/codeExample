@@ -1,0 +1,20 @@
+---
+
+.sovet-gd-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.sovet_gd_ru"
+
+datafix-sovet-gd-dev:
+  extends:
+    - .datafix-dev
+    - .sovet-gd-variables
+
+datafix-sovet-gd-rc:
+  extends:
+    - .datafix-rc
+    - .sovet-gd-variables
+
+datafix-sovet-gd-prod:
+  extends:
+    - .datafix-prod
+    - .sovet-gd-variables

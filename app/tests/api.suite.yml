@@ -1,0 +1,34 @@
+---
+actor: ApiTester
+modules:
+  enabled:
+    - \App\Tests\Helper\Api
+    - \App\Tests\Helper\DbHelper
+    - Symfony:
+        app_path: 'src'
+        var_path: 'var'
+        environment: 'test'
+    - Doctrine2:
+        depends: Symfony
+        cleanup: true
+    - REST:
+        depends: Symfony
+        part: Json
+        timeout: 60
+    - Asserts:
+# extensions:
+#  enabled:
+#    - BookIt\Codeception\TestRail\Extension
+#  config:
+#    BookIt\Codeception\TestRail\Extension:
+#      enabled: '%TESTRAIL_ENABLE%'
+#      user: '%TESTRAIL_USER%'
+#      apikey: '%TESTRAIL_APIKEY%'
+#      url: '%TESTRAIL_URL%'
+#      project: '%TESTRAIL_PROJECT%'
+#      status:
+#        success: 1                    # Override the default success status (optional)
+#        skipped: 3                   # Override the default skipped status (optional)
+#        incomplete: 12                # Override the default incomplete status (optional)
+#        failed: 5                     # Override the default failed status (optional)
+#        error: 5                      # Override the default error status (optional)

@@ -1,0 +1,3 @@
+---
+parameters:
+  sentry_dsn: '%env(SENTRY_DSN)%'

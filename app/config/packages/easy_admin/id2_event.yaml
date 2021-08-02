@@ -1,0 +1,36 @@
+---
+easy_admin:
+  entities:
+    Id2Event:
+      class: App\Domain\Entity\Id2\Id2Event
+      label: 'События id2'
+      list:
+        item_permission: 'ROLE_MARKETER'
+        actions:
+          - show
+          - {name: 'edit', template: 'easy_admin_role_supervisor.twig'}
+        fields:
+          - {property: 'id'}
+          - {property: 'name', label: 'Название'}
+          - {property: 'action', label: 'Action'}
+          - {property: 'category1', label: 'Category1'}
+          - {property: 'category2', label: 'Category2'}
+      show:
+        item_permission: 'ROLE_MARKETER'
+        actions:
+          - {name: 'edit', template: 'easy_admin_role_supervisor.twig'}
+        fields:
+          - {property: 'id'}
+          - {property: 'name', label: 'Название'}
+          - {property: 'action', label: 'Action'}
+          - {property: 'category1', label: 'Category1'}
+          - {property: 'category2', label: 'Category2'}
+      edit:
+        item_permission: ['ROLE_ADMIN', 'ROLE_SUPERVISOR']
+        fields:
+          - {property: 'id', type_options: {disabled: true}}
+          - {property: 'name', label: 'Название', type_options: {disabled: true}}
+          - {property: 'action', label: 'Action', type_options: {required: true}}
+          - {property: 'category1', label: 'Category1'}
+          - {property: 'category2', label: 'Category2'}
+      disabled_actions: ['new', 'delete']

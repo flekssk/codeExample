@@ -1,0 +1,30 @@
+---
+App\Domain\Entity\SpecialistAccess\SpecialistAccess:
+  type: entity
+  table: specialist_access
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    specialistId:
+      type: integer
+      nullable: false
+      options:
+        comment: 'ID специалиста'
+    productId:
+      type: integer
+      nullable: false
+      options:
+        comment: 'ID продукта'
+    dateStart:
+      type: datetime_immutable
+      nullable: false
+      options:
+        comment: 'Дата начала доступа'
+    dateEnd:
+      type: datetime_immutable
+      nullable: true
+      options:
+        comment: 'Дата окончания доступа'

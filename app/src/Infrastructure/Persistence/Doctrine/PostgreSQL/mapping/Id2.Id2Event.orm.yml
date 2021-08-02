@@ -1,0 +1,27 @@
+---
+App\Domain\Entity\Id2\Id2Event:
+  type: entity
+  table: id2_events
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      options:
+        comment: 'Имя события'
+    action:
+      type: string
+      options:
+        comment: 'Название типа события'
+    category1:
+      nullable: true
+      type: string
+    category2:
+      nullable: true
+      type: string
+    updatedAt:
+      type: datetime_immutable
+      nullable: true

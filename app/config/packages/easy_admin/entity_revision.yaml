@@ -1,0 +1,23 @@
+---
+easy_admin:
+  entities:
+    EntityRevision:
+      class: App\Domain\Entity\EntityRevision\EntityRevision
+      label: 'История изменений'
+      list:
+        item_permission: ['ROLE_SUPERVISOR', 'ROLE_ADMIN']
+        actions: ['show']
+        fields:
+          - {property: 'entityType', label: 'Сущность'}
+          - {property: 'userId', label: 'Id пользователя'}
+          - {property: 'operation', label: 'Действие'}
+          - {property: 'createdAt', label: 'Дата'}
+      show:
+        item_permission: ['ROLE_SUPERVISOR', 'ROLE_ADMIN']
+        fields:
+          - {property: 'entityType', label: 'Сущность'}
+          - {property: 'userId', label: 'Id пользователя'}
+          - {property: 'operation', label: 'Действие'}
+          - {property: 'createdAt', label: 'Дата'}
+          - {property: 'prettyContent', label: 'Изменение'}
+      disabled_actions: ['new', 'edit', 'delete']

@@ -1,0 +1,4 @@
+---
+symfony_sphinx:
+    host: '%env(SPHINX_URL)%'
+    port: '%env(SPHINX_PORT)%'

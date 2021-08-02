@@ -1,0 +1,7 @@
+---
+easy_admin:
+  formats:
+    date: 'Y-m-d'
+    time: 'H:i'
+    datetime: 'Y-m-d H:i:s'
+    number: '%0.0f'

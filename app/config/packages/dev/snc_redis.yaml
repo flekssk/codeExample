@@ -1,0 +1,21 @@
+---
+snc_redis:
+  clients:
+    default:
+      type: phpredis
+      alias: default
+      dsn: '%env(REDIS_DSN)%'
+      logging: true
+  session:
+    client: default
+  doctrine:
+    metadata_cache:
+      client: default
+      entity_manager: default
+      document_manager: default
+    result_cache:
+      client: default
+      entity_manager: [default, read]
+    query_cache:
+      client: default
+      entity_manager: default

@@ -1,0 +1,27 @@
+---
+App\Domain\Entity\Event\CustomValue:
+  type: entity
+  table: custom_value
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      options:
+        comment: 'Имя события'
+    key:
+      type: string
+      nullable: true
+      options:
+        comment: 'Имя свойства'
+    value:
+      type: string
+      nullable: true
+      options:
+        comment: 'Значение свойства'
+    updatedAt:
+      type: datetime_immutable
+      nullable: true

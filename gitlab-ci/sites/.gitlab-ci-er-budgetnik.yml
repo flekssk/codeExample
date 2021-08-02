@@ -1,0 +1,20 @@
+---
+
+.budgetnik-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.er_budgetnik_ru"
+
+datafix-budgetnik-dev:
+  extends:
+    - .datafix-dev
+    - .budgetnik-variables
+
+datafix-budgetnik-rc:
+  extends:
+    - .datafix-rc
+    - .budgetnik-variables
+
+datafix-budgetnik-prod:
+  extends:
+    - .datafix-prod
+    - .budgetnik-variables

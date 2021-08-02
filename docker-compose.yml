@@ -1,0 +1,77 @@
+---
+version: '3.5'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./build/docker/app/Dockerfile
+      target: local
+    ports:
+      - ${DOCKER_COMPOSE_PORT_APP}:80
+    volumes:
+      - ./app:/var/www:cached
+      - ./app/var/cache:/var/www/cache:delegated
+    working_dir: /var/www
+    depends_on:
+      - db
+      - redis
+      - sphinx
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=local
+      - COMPOSER_MEMORY_LIMIT=-1
+
+  test:
+    build:
+      context: .
+      dockerfile: ./build/docker/app/Dockerfile
+      target: local
+    volumes:
+      - ./app:/var/www:cached
+    working_dir: /var/www
+    depends_on:
+      - db
+    environment:
+      - ENVIRONMENT=test
+      - COMPOSER_MEMORY_LIMIT=-1
+
+      #  wiremock:
+      #    build: /build/docker/wiremock
+      #    volumes:
+      #      - ./app/tests/wiremock/:/home/wiremock
+
+  db:
+    build: ./build/docker/postgres
+    ports:
+      - ${DOCKER_COMPOSE_PORT_DB}:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db
+
+  redis:
+    image: redis:3
+    ports:
+      - ${DOCKER_COMPOSE_PORT_REDIS}:6379
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  sphinx:
+    build:
+      context: .
+      dockerfile: ./build/docker/sphinx/Dockerfile
+      target: local
+    ports:
+      - 9306:9306
+      - 9312:9312
+    depends_on:
+      - db
+
+volumes:
+  db-data:

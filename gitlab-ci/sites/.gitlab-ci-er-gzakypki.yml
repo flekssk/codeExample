@@ -1,0 +1,20 @@
+---
+
+.gzakypki-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.er_gzakypki_ru"
+
+datafix-gzakypki-dev:
+  extends:
+    - .datafix-dev
+    - .gzakypki-variables
+
+datafix-gzakypki-rc:
+  extends:
+    - .datafix-rc
+    - .gzakypki-variables
+
+datafix-gzakypki-prod:
+  extends:
+    - .datafix-prod
+    - .gzakypki-variables

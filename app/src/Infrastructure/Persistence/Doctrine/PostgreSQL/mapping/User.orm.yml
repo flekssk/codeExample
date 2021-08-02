@@ -1,0 +1,28 @@
+---
+App\Domain\Entity\User:
+  type: entity
+  table: users
+  id:
+    uuid:
+      type: string
+      generator:
+        strategy: NONE
+  fields:
+    roles:
+      type: string
+    name:
+      type: string
+    email:
+      type: string
+    isActive:
+      type: boolean
+    createdAt:
+      type: datetime_immutable
+    deletedAt:
+      type: datetime
+      nullable: true
+  gedmo:
+    soft_deleteable:
+      field_name: deletedAt
+      time_aware: false
+      hard_delete: false

@@ -1,0 +1,20 @@
+---
+
+.fd-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.na_fd_ru"
+
+datafix-fd-dev:
+  extends:
+    - .datafix-dev
+    - .fd-variables
+
+datafix-fd-rc:
+  extends:
+    - .datafix-rc
+    - .fd-variables
+
+datafix-fd-prod:
+  extends:
+    - .datafix-prod
+    - .fd-variables

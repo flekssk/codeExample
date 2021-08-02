@@ -1,0 +1,6 @@
+{% set data = get_skill_improve_links_by_skill(item) %}
+
+{% for skillImproveLink in data %}
+    <div>{{ skillImproveLink.school }}:</div>
+    <div><a href="{{ skillImproveLink.link }}">{{ skillImproveLink.link }}</a></div>
+{% endfor %}

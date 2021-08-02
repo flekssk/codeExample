@@ -1,0 +1,55 @@
+---
+easy_admin:
+  entities:
+    DocumentType:
+      class: App\Domain\Entity\DocumentType\DocumentType
+      controller: App\UI\Controller\EasyAdmin\AdminDocumentTypeController
+      label: 'Типы документов'
+      list:
+        actions:
+          - show
+          - {name: 'edit', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'delete', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'new', label: 'Добавить запись', template: 'easy_admin_role_marketer.twig'}
+        fields:
+          - {property: 'id'}
+          - {property: 'name', label: 'Название типа'}
+          - {property: 'documentTemplate', label: 'Шаблон документа в CRM'}
+          - {property: 'templateName', label: 'Верстка шаблона'}
+          - {property: 'active', label: 'Активность'}
+          - {property: 'createdAt', label: 'Дата создания'}
+          - {property: 'updatedAt', label: 'Дата изменения'}
+      show:
+        actions:
+          - {name: 'edit', template: 'easy_admin_role_marketer.twig'}
+          - {name: 'delete', template: 'easy_admin_role_marketer.twig'}
+        fields:
+          - {property: 'id'}
+          - {property: 'name', label: 'Название типа'}
+          - {property: 'documentTemplate', label: 'Шаблон документа в CRM'}
+          - {property: 'templateName', label: 'Верстка шаблона'}
+          - {property: 'active', label: 'Активность', role: 'ROLE_MARKETER'}
+          - {property: 'imagePreview', type: 'image', label: 'Картинка-превью документа'}
+          - {property: 'imageBackground', type: 'image', label: 'Картинка-фон документа'}
+          - {property: 'createdAt', label: 'Дата создания'}
+          - {property: 'updatedAt', label: 'Дата изменения'}
+      edit:
+        item_permission: 'ROLE_MARKETER'
+        fields:
+          - {property: 'id', type_options: {disabled: true}}
+          - {property: 'name', label: 'Название типа'}
+          - {property: 'documentTemplate', label: 'Шаблон документа в CRM', type_options: {required: true}}
+          - {property: 'templateName', label: 'Верстка шаблона', type: App\UI\Form\Type\TemplateListType}
+          - {property: 'active', label: 'Активность'}
+          - {property: 'imagePreviewFile', label: 'Картинка-превью документа', type: 'vich_image', type_options: {allow_delete: false}}
+          - {property: 'imageBackgroundFile', label: 'Картинка-фон документа', type: 'vich_image', type_options: {allow_delete: false}}
+          - {property: 'createdAt', label: 'Дата создания', type_options: {disabled: true}}
+      new:
+        item_permission: 'ROLE_MARKETER'
+        fields:
+          - {property: 'name', label: 'Название типа'}
+          - {property: 'documentTemplate', label: 'Шаблон документа в CRM', type_options: {required: true}}
+          - {property: 'templateName', label: 'Верстка шаблона', type: App\UI\Form\Type\TemplateListType}
+          - {property: 'active', label: 'Активность'}
+          - {property: 'imagePreviewFile', label: 'Картинка-превью документа', type: 'vich_image'}
+          - {property: 'imageBackgroundFile', label: 'Картинка-фон документа', type: 'vich_image'}

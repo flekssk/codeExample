@@ -1,0 +1,30 @@
+---
+easy_admin:
+  entities:
+    SpecialistDocument:
+      class: App\Domain\Entity\SpecialistDocument\SpecialistDocument
+      label: 'Документы специалистов'
+      list:
+        actions: ['show']
+        fields:
+          - {property: 'id'}
+          - {property: 'number', label: 'Номер документа'}
+          - {property: 'typeDocument', label: 'Тип документа'}
+          - {property: 'date', label: 'Дата выдачи документа'}
+          - {property: 'specialistId', label: 'ID специалиста'}
+      show:
+        fields:
+          - {property: 'id'}
+          - {property: 'crmId', label: 'GUID документа из CRM'}
+          - {property: 'number', label: 'Номер документа'}
+          - {property: 'specialistId', label: 'ID специалиста'}
+          - {property: 'name', label: 'Название документа'}
+          - {property: 'typeDocument', label: 'Тип документа'}
+          - {property: 'templateId', label: 'ID шаблона'}
+          - {property: 'date', label: 'Дата выдачи документа'}
+          - {property: 'endDate', label: 'Дата окончания действия документа'}
+          - {property: 'eduDateStart', label: 'Дата начала обучения'}
+          - {property: 'eduDateEnd', label: 'Дата окончания обучения'}
+          - {property: 'hours', label: 'Затрачено часов'}
+          - {property: 'disciplinesName', label: 'Название дисциплины'}
+      disabled_actions: ['new', 'edit', 'delete']

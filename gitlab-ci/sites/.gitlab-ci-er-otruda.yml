@@ -1,0 +1,20 @@
+---
+
+.otruda-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.er_otruda_ru"
+
+datafix-otruda-dev:
+  extends:
+    - .datafix-dev
+    - .otruda-variables
+
+datafix-otruda-rc:
+  extends:
+    - .datafix-rc
+    - .otruda-variables
+
+datafix-otruda-prod:
+  extends:
+    - .datafix-prod
+    - .otruda-variables

@@ -1,0 +1,20 @@
+---
+
+.gkh-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.er_gkh_ru"
+
+datafix-gkh-dev:
+  extends:
+    - .datafix-dev
+    - .gkh-variables
+
+datafix-gkh-rc:
+  extends:
+    - .datafix-rc
+    - .gkh-variables
+
+datafix-gkh-prod:
+  extends:
+    - .datafix-prod
+    - .gkh-variables

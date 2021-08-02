@@ -1,0 +1,20 @@
+---
+
+.1glms-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.er_1glms_ru"
+
+datafix-1glms-dev:
+  extends:
+    - .datafix-dev
+    - .1glms-variables
+
+datafix-1glms-rc:
+  extends:
+    - .datafix-rc
+    - .1glms-variables
+
+datafix-1glms-prod:
+  extends:
+    - .datafix-prod
+    - .1glms-variables

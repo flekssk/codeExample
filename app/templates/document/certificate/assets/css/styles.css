@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 1.6rem;
+    line-height: 23px;
+    color: #303030;
+}
+
+.white-popup {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    width: auto;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+.white-popup-sec {
+    max-width: 960px;
+    min-width: 960px;
+}
+
+.white-popup-sec img {
+    max-width: 100%;
+}
+
+.content__main {
+    padding: 60px 0 100px 125px;
+    max-width: 95%;
+}
+
+.user__certificate-data {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 14px;
+}
+
+.user__certificate-data p {
+    position: absolute;
+    display: block;
+}
+
+.certificate-data-title {
+    bottom: 600px;
+    left: 529px;
+}
+
+.certificate-data-type {
+    bottom: 600px;
+    left: 65px;
+}
+
+.certificate-data-name {
+    left: 665px;
+    top: 163px;
+}
+
+.certificate-data-name span {
+    display: block;
+}
+
+.certificate-data-desc {
+    left: 665px;
+    top: 202px;
+    width: 200px;
+}
+
+.certificate-data-hours {
+    left: 665px;
+    top: 305px;
+    width: 200px;
+}
+
+.certificate-data-date {
+    left: 665px;
+    top: 325px;
+    width: 200px;
+}
+
+.certificate-data-regist-number {
+    font-size: 16px;
+    bottom: 125px;
+    left: 225px;
+}
+
+.certificate-data-year {
+    bottom: 92px;
+    right: 345px;
+}

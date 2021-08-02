@@ -1,0 +1,47 @@
+---
+App\Domain\Entity\DocumentType\DocumentType:
+  type: entity
+  table: document_type
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      options:
+        comment: 'Название типа'
+    templateName:
+      type: string
+      options:
+        comment: 'Название шаблона верстки'
+    active:
+      type: boolean
+      options:
+        comment: 'Флаг активности'
+    imagePreview:
+      type: string
+      nullable: true
+      options:
+        comment: 'URL изображения для превью'
+    imageBackground:
+      type: string
+      nullable: true
+      options:
+        comment: 'URL изображения для фона'
+    createdAt:
+      type: datetime_immutable
+      options:
+        comment: 'Дата создания'
+    updatedAt:
+      type: datetime_immutable
+      nullable: true
+      options:
+        comment: 'Дата изменения'
+  manyToOne:
+    documentTemplate:
+      targetEntity: App\Domain\Entity\DocumentTemplate\DocumentTemplate
+      joinColumn:
+        name: document_template
+        referencedColumnName: id

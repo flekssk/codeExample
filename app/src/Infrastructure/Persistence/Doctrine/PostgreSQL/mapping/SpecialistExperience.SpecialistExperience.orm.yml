@@ -1,0 +1,30 @@
+---
+App\Domain\Entity\SpecialistExperience\SpecialistExperience:
+  type: entity
+  table: specialist_experience
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    specialistId:
+      type: integer
+      nullable: false
+      options:
+        comment: 'ID специалиста'
+    company:
+      type: string
+      nullable: false
+      options:
+        comment: 'Название компании'
+    startDate:
+      type: datetime_immutable
+      nullable: false
+      options:
+        comment: 'Дата начала работы в компании'
+    endDate:
+      type: datetime_immutable
+      nullable: true
+      options:
+        comment: 'Дата окончания работы в компании'

@@ -1,0 +1,15 @@
+---
+App\Domain\Entity\School\School:
+  type: entity
+  table: school
+  id:
+    id:
+      type: integer
+      nullable: false
+      generator:
+        strategy: NONE
+  fields:
+    name:
+      type: string
+      options:
+        comment: 'Название школы'

@@ -1,0 +1,20 @@
+---
+
+.menobr-variables:
+  variables:
+    ENV_FROM_CI_X_HOST: "ru-ru.erro_menobr_ru"
+
+datafix-menobr-dev:
+  extends:
+    - .datafix-dev
+    - .menobr-variables
+
+datafix-menobr-rc:
+  extends:
+    - .datafix-rc
+    - .menobr-variables
+
+datafix-menobr-prod:
+  extends:
+    - .datafix-prod
+    - .menobr-variables

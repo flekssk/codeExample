@@ -1,0 +1,49 @@
+{% extends '@!EasyAdmin/page/content.html.twig' %}
+
+{% block content_header_wrapper %}
+    <section class="content-header ">
+        <div class="d-flex flex-row justify-content-between align-content-center w-100">
+            <div class="content-header-title">
+                <h1 class="title">Сортировка навыков</h1>
+            </div>
+        </div>
+
+    </section>
+{% endblock content_header_wrapper %}
+
+{% block main %}
+    <div class="error-message hidden">Навыки могут сортироваться только в рамках своего макронавыка/макротипа.</div>
+    {% for macroType in skills %}
+        <div class="macro-type-container material-container">
+            <div class="macro-type-name">{{ macroType.name }}</div>
+            <div class="macro-skills-container">
+                {% for id, skill in macroType.macroElements %}
+                    <div class="skill-container material-container">
+                        <div class="macro-skill-name">{{ skill.name }}</div>
+                        <ul id="macro-{{ id }}" class="skill-sort-container">
+                            {% for element in skill.elements %}
+                                <li class="skill draggable skill-name material-container" data-id="{{ element.id }}" data-weight="{{ element.weight }}">
+                                    <span class="fa-li"><i class="fas fa-bars"></i></span>
+                                    <span class="skill-name">{{ element.name }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock main %}
+
+{% block content_footer_wrapper %}
+    <section class="content-footer">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary action-save" data-action="{{ path('skill_sort_save') }}">
+                <span class="btn-label ">Сохранить изменения</span>
+            </button>
+        </div>
+    </section>
+
+    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_link_tags('app') }}
+{% endblock content_footer_wrapper %}
