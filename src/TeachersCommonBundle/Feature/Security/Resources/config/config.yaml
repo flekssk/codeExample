@@ -1,0 +1,9 @@
+services:
+    TeachersCommonBundle\Feature\Security\Service\UnauthorizedEntryPoint:
+        autowire: true
+
+    TeachersCommonBundle\Feature\Security\Service\MockJwtGenerator:
+        autowire: true
+        public: true
+        arguments:
+            $privateKeyPath: '%kernel.root_dir%/TeachersCommonBundle/Tests/JWT/test_jwt_rsa_private_key'

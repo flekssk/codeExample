@@ -1,0 +1,25 @@
+doctrine:
+    dbal:
+        types:
+            course_group_courses: TeachersTrainingCenterBundle\Feature\CourseGroup\Model\Doctrine\Type\CourseGroupCoursesType
+    orm:
+        entity_managers:
+            ttc:
+                mappings:
+                    TeachersTrainingCenterBundleCourseGroup:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/TeachersTrainingCenterBundle/Feature/CourseGroup/Model/Entity'
+                        prefix: TeachersTrainingCenterBundle\Feature\CourseGroup\Model\Entity\
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    TeachersTrainingCenterBundle\Feature\CourseGroup\Http\:
+        resource: '../../Http/**/Controller.php'
+        autoconfigure: true
+        tags:
+            - 'controller.service_arguments'

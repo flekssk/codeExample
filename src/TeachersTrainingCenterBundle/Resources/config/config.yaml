@@ -1,0 +1,187 @@
+parameters:
+  server_api.json_schema_path:
+    - '%kernel.root_dir%/TeachersConductorBundle/Feature/SmartJsonConverter/Resources/schemas'
+    - '%kernel.root_dir%/TeachersConductorBundle/Feature/Vacation/Resources/schemas'
+    - '%kernel.root_dir%/TeachersConductorBundle/Feature/UserHistory/Resources/schemas'
+    - '%kernel.root_dir%/TeachersConductorBundle/Feature/TeacherThirdPartyInfo/Resources/schemas'
+
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+    bind:
+      Symfony\Contracts\Cache\CacheInterface: '@cache.adapter.memcached'
+
+  TeachersTrainingCenterBundle\:
+    resource: '../../*'
+    exclude: '../../{DependencyInjection,Entity,Migrations,Tests,Kernel.php,Security}'
+
+  TeachersTrainingCenterBundle\Security\UserProvider:
+    class: 'TeachersTrainingCenterBundle\Security\UserProvider'
+
+  Skyeng\VimboxCoreStepStore\Configuration:
+    class: Skyeng\VimboxCoreStepStore\Configuration
+    calls:
+      - [setUsername, ['%api.vimbox_step_store.username%']]
+      - [setPassword, ['%api.vimbox_step_store.password%']]
+      - [setHost, ['%api.vimbox_step_store.host%']]
+
+  Skyeng\VimboxCoreStepStore\API\ServerApiApi:
+    class: Skyeng\VimboxCoreStepStore\API\ServerApiApi
+    arguments:
+      -
+      - '@Skyeng\VimboxCoreStepStore\Configuration'
+
+  Skyeng\VimboxCoreRooms\Configuration:
+    class: Skyeng\VimboxCoreRooms\Configuration
+    calls:
+      - [setUsername, ['%api.vimbox_core_rooms.username%']]
+      - [setPassword, ['%api.vimbox_core_rooms.password%']]
+      - [setHost, ['%api.vimbox_core_rooms.host%']]
+
+  Skyeng\VimboxCoreRooms\API\RoomApi:
+    class: Skyeng\VimboxCoreRooms\API\RoomApi
+    arguments:
+      -
+      - '@Skyeng\VimboxCoreRooms\Configuration'
+
+  Skyeng\VimboxCoreRooms\API\NodeApi:
+    class: Skyeng\VimboxCoreRooms\API\NodeApi
+    arguments:
+      -
+      - '@Skyeng\VimboxCoreRooms\Configuration'
+
+  Skyeng\VimboxCoreRooms\API\ComplexApi:
+    arguments:
+      -
+      - '@Skyeng\VimboxCoreRooms\Configuration'
+
+  Skyeng\VideoBackend\Configuration:
+    class: Skyeng\VideoBackend\Configuration
+    calls:
+      - [setUsername, ['%api.video.username%']]
+      - [setPassword, ['%api.video.password%']]
+      - [setHost, ['%api.video.host%']]
+
+  Skyeng\VideoBackend\API\VideoConfigApi:
+    class: Skyeng\VideoBackend\API\VideoConfigApi
+    arguments:
+      -
+      - '@Skyeng\VideoBackend\Configuration'
+
+  TeachersTrainingCenterBundle\Controller\Api\Auth\Pusher\v1\PusherConfig:
+    class: TeachersTrainingCenterBundle\Controller\Api\Auth\Pusher\v1\PusherConfig
+    arguments:
+      - '%pusher_key%'
+      - '%pusher_cluster%'
+      - '%pusher_main_hosts%'
+      - '%pusher_additional_hosts%'
+
+  TeachersTrainingCenterBundle\Api\Crm2Api\Crm2Api:
+    class: TeachersTrainingCenterBundle\Api\Crm2Api\Crm2Api
+    arguments:
+      $crm2ApiClient: '@guzzle.client.crm2_api'
+
+  guzzle.client.crm2_api:
+    class: 'GuzzleHttp\Client'
+    arguments:
+      - base_uri: '%endpoint.crm2.host%'
+        auth:
+          - '%endpoint.crm2.username%'
+          - '%endpoint.crm2.password%'
+        connect_timeout: 1
+        exceptions: true
+
+  TeachersTrainingCenterBundle\Api\ContentApi\ContentApi:
+    arguments:
+      $contentApiClient: '@guzzle.client.content_api'
+
+  guzzle.client.content_api:
+    class: 'GuzzleHttp\Client'
+    arguments:
+      - base_uri: '%endpoint.content.host%'
+        auth:
+          - '%endpoint.content.username%'
+          - '%endpoint.content.password%'
+        timeout: 10
+        connect_timeout: 3
+        exceptions: true
+
+  TeachersTrainingCenterBundle\Api\WordsApi\WordsApi:
+    arguments:
+      $client: '@guzzle.client.words_api'
+
+  guzzle.client.words_api:
+    class: 'GuzzleHttp\Client'
+    arguments:
+      - base_uri: '%endpoint.words.host%'
+        auth:
+          - '%endpoint.words.username%'
+          - '%endpoint.words.password%'
+        timeout: 5
+        connect_timeout: 1
+        exceptions: true
+
+  JsonMapper:
+    class: '\JsonMapper'
+    properties:
+      bExceptionOnMissingData: true
+      bIgnoreVisibility: true
+
+  Memcached:
+    class: Memcached
+    calls:
+      - [addServers, ['%memcache_servers%']]
+      - [setOption, [-1002, '%memcache_prefix%']]
+
+  cache.adapter.memcached:
+    class: 'Symfony\Component\Cache\Adapter\MemcachedAdapter'
+    arguments:
+      - '@Memcached'
+
+  TeachersTrainingCenterBundle\RabbitMq\Event\NewRelicAMQPSubscriber:
+    class: TeachersTrainingCenterBundle\RabbitMq\Event\NewRelicAMQPSubscriber
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Skyeng\VimboxFeedback\Configuration:
+    class: Skyeng\VimboxFeedback\Configuration
+    calls:
+      - [setUsername, ['%api.vimbox_feedback.username%']]
+      - [setPassword, ['%api.vimbox_feedback.password%']]
+      - [setHost, ['%api.vimbox_feedback.host%']]
+
+  Skyeng\VimboxFeedback\API\SetAnswerApi:
+    class: Skyeng\VimboxFeedback\API\SetAnswerApi
+    arguments:
+      -
+      - '@Skyeng\VimboxFeedback\Configuration'
+
+  TeachersTrainingCenterBundle\Service\ClearTestUserDataService:
+    arguments:
+      $testUsers: '%test_users%'
+      $scope: '%scope%'
+
+  TeachersTrainingCenterBundle\Command\ClearTestUsersDataCommand:
+    arguments:
+      $testUsers: '%test_users%'
+
+  admin.user_course:
+    class: TeachersTrainingCenterBundle\Admin\Model\UserCourseAdmin
+    arguments: [
+        ~,
+        TeachersTrainingCenterBundle\Feature\UserCourse\Model\Entity\UserCourse,
+        TeachersTrainingCenterBundle\Admin\Controller\UserCourseController,
+        '@TeachersTrainingCenterBundle\Api\ContentApi\ContentApi'
+    ]
+    tags:
+      - { name: sonata.admin, manager_type: orm, label: 'User courses' }
+
+  TeachersTrainingCenterBundle\Admin\Controller\UserCourseController:
+    class: TeachersTrainingCenterBundle\Admin\Controller\UserCourseController
+    arguments:
+      $contentApi: '@TeachersTrainingCenterBundle\Api\ContentApi\ContentApi'
+    tags:
+      - { name: controller.service_arguments }

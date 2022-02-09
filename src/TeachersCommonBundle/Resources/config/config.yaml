@@ -1,0 +1,7 @@
+imports:
+    - { resource: '@TeachersCommonBundle/Feature/ApiResponseLogging/Resources/config/config.yaml' }
+    - { resource: '@TeachersCommonBundle/Feature/ConventionalResponse/Resources/config/config.yaml' }
+    - { resource: '@TeachersCommonBundle/Feature/Security/Resources/config/config.yaml' }
+    - { resource: '@TeachersCommonBundle/Feature/SmartJsonConverter/Resources/config/config.yaml' }
+    - { resource: '@TeachersCommonBundle/Feature/ApiRequestLogging/Resources/config/config.yaml' }
+    - { resource: '@TeachersCommonBundle/Feature/RabbitSender/Resources/config/config.yaml' }

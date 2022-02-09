@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "properties": {
+        "orderBy": {
+            "type": "string",
+            "title": "Название столбца для сортировки",
+            "example": "id"
+        },
+        "orderDirection": {
+            "type": "string",
+            "title": "Направление сортировки",
+            "example": "asc, desc"
+        }
+    },
+    "additionalProperties": false
+}

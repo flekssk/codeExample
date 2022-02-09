@@ -1,0 +1,22 @@
+doctrine:
+    orm:
+        entity_managers:
+            ttc:
+                mappings:
+                    TeachersTrainingCenterBundleUserCourse:
+                        is_bundle: false
+                        type: annotation
+                        prefix: TeachersTrainingCenterBundle\Feature\UserCourse\Model\Entity\
+                        dir: '%kernel.project_dir%/src/TeachersTrainingCenterBundle/Feature/UserCourse/Model/Entity'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    TeachersTrainingCenterBundle\Feature\UserCourse\Http\:
+        resource: '../../Http/**/Controller.php'
+        autoconfigure: true
+        tags:
+            - 'controller.service_arguments'

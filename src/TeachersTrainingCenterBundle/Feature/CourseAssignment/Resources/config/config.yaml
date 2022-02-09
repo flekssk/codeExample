@@ -1,0 +1,49 @@
+old_sound_rabbit_mq:
+    producers:
+        ttc.event.assign_course_group:
+            class: TeachersTrainingCenterBundle\Feature\CourseAssignment\Producers\CourseAssignmentProducer
+            connection: default
+            exchange_options:
+                name: 'ttc.event.assign_course_group'
+                type: fanout
+    consumers:
+        ttc.event.assign_course_group:
+            connection: default
+            exchange_options: { name: '%rabbit_mq.prefix%ttc.event.assign_course_group', type: fanout }
+            queue_options:
+                name: '%rabbit_mq.prefix%ttc.event.assign_course_group'
+            callback: TeachersTrainingCenterBundle\Feature\CourseAssignment\Consumer\CourseAssignmntConsumer
+            idle_timeout: 300
+            idle_timeout_exit_code: 0
+            qos_options: { prefetch_size: 0, prefetch_count: 30, global: false }
+            graceful_max_execution:
+                timeout: 1800
+                exit_code: 0
+
+doctrine:
+    dbal:
+        types:
+            course_assignment_rules_target: TeachersTrainingCenterBundle\Feature\CourseAssignment\Model\Doctrine\Type\CourseAssignmentRulesTargetType
+    orm:
+        entity_managers:
+            ttc:
+                mappings:
+                    TeachersTrainingCenterBundleCourseAssignment:
+                        is_bundle: false
+                        type: annotation
+                        prefix: TeachersTrainingCenterBundle\Feature\CourseAssignment\Model\Entity\
+                        dir: '%kernel.project_dir%/src/TeachersTrainingCenterBundle/Feature/CourseAssignment/Model/Entity'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    TeachersTrainingCenterBundle\Feature\CourseAssignment\Http\:
+        resource: '../../Http/**/Controller.php'
+        autoconfigure: true
+        tags:
+            - 'controller.service_arguments'
+
+    TeachersTrainingCenterBundle\Feature\CourseAssignment\Consumer\CourseAssignmntConsumer:

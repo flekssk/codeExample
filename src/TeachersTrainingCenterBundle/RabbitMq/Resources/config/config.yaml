@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+        public: false
+
+    TeachersCabinetBundle\Service\RabbitMq\Converters\MessageConverter:
+
+    TeachersCabinetBundle\Service\RabbitMq\Service\ProducerProvider:
+        calls:
+            - [registerEvent, [ 'TeachersCabinetBundle\Feature\ActionReminders\Model\DTO\Event\TeacherRequest\RegularGroupLessonsReminderResolvedEvent', '@old_sound_rabbit_mq.event.pct.teacher_requests.teacher_reacted_producer' ]]
+
+    TeachersCabinetBundle\Service\RabbitMq\Service\ProducerProviderInterface: '@TeachersCabinetBundle\Service\RabbitMq\Service\ProducerProvider'
+
+    TeachersCabinetBundle\Service\RabbitMq\Service\EventSender:
+
+    TeachersCabinetBundle\Service\RabbitMq\Service\EventSenderInterface: '@TeachersCabinetBundle\Service\RabbitMq\Service\EventSender'
+

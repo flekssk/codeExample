@@ -1,0 +1,13 @@
+services:
+    TeachersCommonBundle\Feature\ConventionalResponse\EventListener\ConventionalApiExceptionListener:
+        autowire: true
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    TeachersCommonBundle\Feature\ConventionalResponse\Service\ConventionalResponseBuilder:
+        autowire: true
+
+    TeachersCommonBundle\Feature\ConventionalResponse\EventListener\ConventionalResponseEventListener:
+        autowire: true
+        tags:
+            - { name: kernel.event_listener, event: kernel.view, method: onKernelView }

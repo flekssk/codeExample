@@ -1,0 +1,15 @@
+parameters:
+    statsd.namespace: 'teachers.teachers-conductor'
+
+services:
+    teachers_conductor.quality_reporter_statsd_client:
+        class: Domnikl\Statsd\Client
+        public: false
+        arguments:
+            $connection: '@statsd.connection'
+            $namespace: '%statsd.namespace%'
+
+    TeachersCommonBundle\Feature\QualityReporter\Service\QualityReporter:
+        arguments:
+            $statsdClient: '@teachers_conductorquality_reporter_statsd_client'
+

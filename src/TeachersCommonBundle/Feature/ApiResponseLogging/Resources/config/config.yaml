@@ -1,0 +1,18 @@
+services:
+    TeachersCommonBundle\Feature\ApiResponseLogging\Service\MethodNameProvider:
+
+    TeachersCommonBundle\Feature\ApiResponseLogging\Service\MethodNameProviderInterface:
+        alias: TeachersCommonBundle\Feature\ApiResponseLogging\Service\MethodNameProvider
+
+    TeachersCommonBundle\Feature\ApiResponseLogging\Service\RequesterNameProvider:
+
+    TeachersCommonBundle\Feature\ApiResponseLogging\Service\RequesterNameProviderInterface:
+        alias: TeachersCommonBundle\Feature\ApiResponseLogging\Service\RequesterNameProvider
+
+    TeachersCommonBundle\Feature\ApiResponseLogging\Service\ApiResponseQualityReporter:
+        autowire: true
+
+    TeachersCommonBundle\Feature\ApiResponseLogging\Service\RequestOriginBeautifier:
+        autowire: true
+        arguments:
+            $baseDomain: '%env(BASE_DOMAIN)%'

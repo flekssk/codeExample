@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    TeachersTrainingCenterBundle\Feature\Trm\Service\AssignableUserProvider:
+        class: \TeachersTrainingCenterBundle\Feature\Trm\Service\AssignableUserProvider

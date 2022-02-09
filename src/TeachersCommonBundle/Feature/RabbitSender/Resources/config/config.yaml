@@ -1,0 +1,13 @@
+services:
+    TeachersCommonBundle\Feature\RabbitSender\Service\:
+        autowire: true
+        public: true
+        resource: '../../Service/*'
+        exclude: '../../Service/{Tests}'
+
+    TeachersCommonBundle\Feature\RabbitSender\Service\RabbitProducerProvider:
+        arguments:
+            $producers: !tagged_iterator old_sound_rabbit_mq.producer
+
+    TeachersCommonBundle\Contracts\Event\EventMessageSenderInterface:
+        alias: TeachersCommonBundle\Feature\RabbitSender\Service\RabbitEventMessageSender

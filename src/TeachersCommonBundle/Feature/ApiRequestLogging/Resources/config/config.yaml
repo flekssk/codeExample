@@ -1,0 +1,26 @@
+parameters:
+    statsd.namespace: 'teachers.teachers-conductor'
+
+services:
+    _defaults:
+        public: false
+        autowire: true
+
+    statsd.client:
+        class: 'Domnikl\Statsd\Client'
+        arguments:
+            $connection: '@statsd.connection'
+            $namespace: '%statsd.namespace%'
+
+    TeachersCommonBundle\Feature\ApiRequestLogging\RequestQualityLogging\Services\QualityReporter:
+        arguments:
+            $statsdClient: '@statsd.client'
+
+    TeachersCommonBundle\Feature\ApiRequestLogging\GuzzleClientFactory:
+        arguments:
+            $qualityReporter: '@TeachersCommonBundle\Feature\ApiRequestLogging\RequestQualityLogging\Services\QualityReporter'
+            $serviceSourceAlias: '%statsd.namespace%'
+            $defaultTimeout: '%http_client_factory.default_timeout%'
+            $defaultConnectionTimeout: '%http_client_factory.default_connection_timeout%'
+
+    TeachersCommonBundle\Feature\ApiRequestLogging\HttpMessageSenderFactory:

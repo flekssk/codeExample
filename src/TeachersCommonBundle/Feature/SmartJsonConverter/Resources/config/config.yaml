@@ -1,0 +1,52 @@
+parameters:
+    server_api.json_schema_path: ~
+
+services:
+    server_api.json_schema_loader:
+        class: Opis\JsonSchema\Loaders\File
+        arguments:
+            - ''
+            - '%server_api.json_schema_path%'
+
+    TeachersCommonBundle\Feature\SmartJsonConverter\Filter\CheckDateTimeInAtomFormatFilter:
+    TeachersCommonBundle\Feature\SmartJsonConverter\Filter\CheckDateByPeriod:
+    TeachersCommonBundle\Feature\SmartJsonConverter\Filter\CheckTimeWithTimezoneFormatFilter:
+    TeachersCommonBundle\Feature\SmartJsonConverter\Filter\CheckDateFormatFilter:
+    TeachersCommonBundle\Feature\SmartJsonConverter\Filter\DummyNullFilter:
+
+    Opis\JsonSchema\ISchemaLoader:
+        alias: server_api.json_schema_loader
+
+    server_api.json_schema_validator_filters:
+        class: Opis\JsonSchema\FilterContainer
+        calls:
+            - [add, ['string', 'correctDateTimeInAtomFormat', '@TeachersCommonBundle\Feature\SmartJsonConverter\Filter\CheckDateTimeInAtomFormatFilter']]
+            - [add, ['string', 'correctTimeWithTimezoneFormat', '@TeachersCommonBundle\Feature\SmartJsonConverter\Filter\CheckTimeWithTimezoneFormatFilter']]
+            - [add, ['string', 'correctDateFormat', '@TeachersCommonBundle\Feature\SmartJsonConverter\Filter\CheckDateFormatFilter']]
+            - [add, ['null', 'correctDateFormat', '@TeachersCommonBundle\Feature\SmartJsonConverter\Filter\DummyNullFilter']]
+            - [add, ['null', 'correctDateTimeInAtomFormat', '@TeachersCommonBundle\Feature\SmartJsonConverter\Filter\DummyNullFilter']]
+
+    server_api.json_schema_validator:
+        class: Opis\JsonSchema\Validator
+        calls:
+            - [setFilters, ['@server_api.json_schema_validator_filters']]
+
+    TeachersCommonBundle\Feature\SmartJsonConverter\Service\ErrorToConstraintViolationConverter:
+
+    TeachersCommonBundle\Feature\SmartJsonConverter\ParamConverter\JsonParamConverter:
+        autowire: true
+        arguments:
+            $schemaLoader: '@server_api.json_schema_loader'
+            $validator: '@server_api.json_schema_validator'
+            $errorConverter: '@TeachersCommonBundle\Feature\SmartJsonConverter\Service\ErrorToConstraintViolationConverter'
+        tags:
+            - { name: 'request.param_converter', converter: 'server_api.json_body_converter'}
+
+    TeachersCommonBundle\Feature\SmartJsonConverter\ParamConverter\JsonParamConverterWithValidationErrorsHandling:
+        arguments:
+            - '@TeachersCommonBundle\Feature\SmartJsonConverter\ParamConverter\JsonParamConverter'
+            - '@validator'
+        tags:
+            - {name: 'request.param_converter', converter: 'json_schema_converter.with_validation_errors_handling'}
+
+    TeachersCommonBundle\Feature\SmartJsonConverter\Service\JsonDecoder:

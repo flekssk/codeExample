@@ -1,0 +1,18 @@
+services:
+    http_client.trm:
+        class: 'GuzzleHttp\Client'
+        factory: [ '@TeachersCommonBundle\Feature\ApiRequestLogging\GuzzleClientFactory', 'createLoggedClient' ]
+        arguments:
+            $serviceDestAlias: 'ttc_backend'
+            $config:
+                base_uri: '%env(TRM_ENDPOINT_INTERNAL)%/'
+                auth:
+                    - 'ttc_backend'
+                    - '%env(TRM_SERVER_API_PASSWORD)%'
+                verify: true
+                exceptions: false
+
+    TeachersTrainingCenterBundle\Api\Trm\TrmClient:
+        arguments:
+            - '@http_client.trm'
+            - '@JMS\Serializer\SerializerInterface'

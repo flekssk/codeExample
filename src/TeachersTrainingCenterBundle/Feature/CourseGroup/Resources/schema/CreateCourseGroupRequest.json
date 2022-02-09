@@ -1,0 +1,42 @@
+{
+    "type": "object",
+    "required": [
+        "title",
+        "courses"
+    ],
+    "properties": {
+        "title": {
+            "type": "string",
+            "length": 255,
+            "title": "Заголовок группы курсов",
+            "example": "Заголовок",
+            "minLength": 5
+        },
+        "description": {
+            "type": "string",
+            "length": 5000,
+            "title": "Заголовок группы курсов",
+            "example": "Заголовок"
+        },
+        "courses": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9223372036854775807
+            }
+        },
+        "rules": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+                "type": "string",
+                "maximum": 9223372036854775807
+            }
+        }
+    },
+    "additionalProperties": false
+}

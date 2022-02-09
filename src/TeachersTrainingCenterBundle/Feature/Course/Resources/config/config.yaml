@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    TeachersTrainingCenterBundle\Feature\Course\Http\:
+        resource: '../../Http/**/Controller.php'
+        autoconfigure: true
+        tags:
+            - 'controller.service_arguments'
