@@ -1,6 +1,0 @@
-{% if is_granted('ROLE_MARKETER') %}
-    {{ include('@EasyAdmin/default/action.html.twig') }}
-{% else %}
-    {% block new_action %}
-    {% endblock new_action %}
-{% endif %}

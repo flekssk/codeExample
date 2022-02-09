@@ -1,7 +1,0 @@
----
-framework:
-  cache:
-    app: cache.adapter.filesystem
-    system: cache.adapter.system
-  session:
-    handler_id: null
